@@ -1,0 +1,22 @@
+Package: seifutoukei
+Title: R interface to Japanese official statistics open data
+Description: Unofficial R interface to the Japanese official
+    statistics (seifu toukei) open data service operated by Statistics
+    Japan and the National Statistics Centre in Tokyo. Requires an
+    application ID which can be obtained by registering at
+    http://statdb.nstac.go.jp/. The author of this package is not
+    affiliated with or authorised by the institutions running the data
+    service.
+Version: 0.1
+Author: Mikael Bourqui <bourqui@struct.re>
+Maintainer: Mikael Bourqui <bourqui@struct.re>
+Depends:
+    R (>= 3.0.3)
+Imports:
+    XML,
+    httr,
+    digest,
+    lubridate,
+    plyr
+License: GPL (>= 2)
+LazyData: true
