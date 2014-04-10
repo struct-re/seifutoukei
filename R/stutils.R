@@ -298,7 +298,9 @@ humanise <- function(x) UseMethod("humanise", x)
 
 humanise.st_result <- function(result) {
     res  <- result$data
-    cols <- colnames(res)[!colnames(res) %in% c("unit", "value")]
+    res$area.code <- res.area
+    cols <- colnames(res)[!colnames(res) %in% c("unit", "value",
+                                                "area.code")]
     vars <- result$metadata$classes
     ## replace subclass codes with names (eg 001, 002 --> Men, Women)
     for (c in cols) {
