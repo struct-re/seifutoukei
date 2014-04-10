@@ -16,18 +16,18 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
                    ##, area=NULL, years=NULL, survey.author=NULL
                    ) {
     args <- as.list(match.call()[-1])
-    if (all(is.na(args))) stop("Please specify at least one query parameter.")
+    if (all(is.null(args))) stop("Please specify at least one query parameter.")
 
     ## Prepare query parameters
     params <- list()
 
     ## keyword search
-    if (any(!is.na(keywords))) {
+    if (any(!is.null(keywords))) {
         params$searchWord <- paste(keywords, collapse=" AND ")
     }
 
     ## specify source survey
-    if (!is.na(survey.name)) {
+    if (!is.null(survey.name)) {
         srv <- find_survey_code(survey.name)
         if (nrow(srv) == 1) {
             params$statsCode <- srv$code
@@ -36,23 +36,23 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
 
     ## specify (year-month) date or date range
     ## preferred format: yyyy-mm or yyyy-mm-yyyy-mm
-    if (!is.na(survey.date)) {
+    if (!is.null(survey.date)) {
         survey.date <- gsub("–", "-",
                             gsub("-(\\d{2})(-|$)", "\\1\\2",
                                  survey.date))
 
-        if (length(survey.date == 1)) {
-            stopifnot(is_sane_year(survey.date) |
-                      is_ymdate(survey.date)    |
-                      is_ymrange(survey.date))
+        if (length(survey.date == 1) &
+            (is_sane_year(survey.date) |
+             is_ymdate(survey.date)    |
+             is_ymrange(survey.date))) {
+            params$surveyYears <- survey.date
         } else if (length(survey.date) == 2 &
-                   is_sane_year(survey.date)) {
-            survey.date <- paste(survey.date, collapse = '-')
+                   all(is_ymdate(survey.date))) {
+            params$surveyYears <- paste(survey.date, collapse = '-')
         } else {
             stop("Could not make sense of survey.date parameter '",
                  survey.date, "'.")
         }
-        params$surveyYears <- survey.date
     }
 
         ## Run DB queries and parse results

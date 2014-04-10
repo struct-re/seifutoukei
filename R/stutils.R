@@ -90,17 +90,17 @@ ym.re <- "(19[5-9]|20[012])\\d(0[1-9]|1[012])"
 
 is_ymrange <- function(strings) {
     re <- paste0('^', ym.re, '-', ym.re, '$')
-    all(regexpr(re, strings) > 0)
+    regexpr(re, strings) > 0
 }
 
 is_ymdate <- function(strings) {
     re <- paste0('^', ym.re, '$')
-    all(regexpr(re, strings) > 0)
+    regexpr(re, strings) > 0
 }
 
 is_sane_year <- function(strings) {
     re <- '^(19[5-9]|20[012])\\d$'
-    all(regexpr(re, strings) > 0)
+    regexpr(re, strings) > 0
 }
 
 ymrange <- function(strings) {
