@@ -3,7 +3,7 @@
 \title{Locate tables and other resources in the Japanese official
 statistics open data access system}
 \usage{
-stfind(keywords = NA, survey.name = NA, survey.date = NA)
+stfind(keywords = NULL, survey.name = NULL, survey.date = NULL)
 }
 \arguments{
   \item{keywords}{vector of keywords to filter by

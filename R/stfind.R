@@ -12,8 +12,8 @@
 #' @importFrom lubridate ymd
 #' @importMethodsFrom XML xmlToDataFrame
 #' @export
-stfind <- function(keywords=NA, survey.name=NA, survey.date=NA
-                   ##, area=NA, years=NA, survey.author=NA
+stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
+                   ##, area=NULL, years=NULL, survey.author=NULL
                    ) {
     args <- as.list(match.call()[-1])
     if (all(is.na(args))) stop("Please specify at least one query parameter.")
@@ -52,6 +52,7 @@ stfind <- function(keywords=NA, survey.name=NA, survey.date=NA
             stop("Could not make sense of survey.date parameter '",
                  survey.date, "'.")
         }
+        params$surveyYears <- survey.date
     }
 
         ## Run DB queries and parse results
