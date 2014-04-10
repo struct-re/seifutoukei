@@ -298,7 +298,9 @@ humanise <- function(x) UseMethod("humanise", x)
 
 humanise.st_result <- function(result) {
     res  <- result$data
-    res$area.code <- res.area
+    ## keep a copy of the JIS area codes
+    res[, "area.code"] <- res$area
+
     cols <- colnames(res)[!colnames(res) %in% c("unit", "value",
                                                 "area.code")]
     vars <- result$metadata$classes

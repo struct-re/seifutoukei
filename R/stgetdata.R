@@ -61,25 +61,41 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw=FALSE) {
     ## get metadata to implement filtering by variable name and value
     meta <- stgetmetadata(resource.id)
 
-    ## format data query
+    ## Prepare query parameters
+    ## ========================
     params <- list(
         statsDataId = format_resource_id(resource.id),
-        metaGetFlg  = "N" # since we are obtaining the metadata separately
+        metaGetFlg  = "N" # since we obtained the metadata above
         )
     params <- add_lang_option(params, lang)
-    if(length(filters) > 1) {
+
+    if(length(filters) > 0) {
+        ## filter by area (JIS prefecture and municipality codes)
         ## if(!is.null(filters$地域コード)) filters$areas <- filters$地域コード
         if(!is.null(filters$areas)) {
-            ## elements of filters$areas at least look like JIS codes
-            stopifnot(grep('^\\d{5}$', filters$areas == 1:length(filters$areas)))
-            params$cdArea <- paste(filters$areas, collapse = ",")
+            ## ensure elements of filters$areas at least look like JIS codes
+            stopifnot(length(grep('^\\d{5}$', filters$areas)) ==
+                      length(filters$areas))
+            if (length(filters$areas) == 2 &
+                ## accept a range of codes if labeled c(from=, to=)
+                !(is.na(filters$areas['from']) |
+                  is.na(filters$areas['to']))) {
+                params$cdAreaFrom <- filters$areas['from']
+                params$cdAreaTo   <- filters$areas['to']
+            } else {
+                ## otherwise interpret it as a simple set of codes
+                params$cdArea <- paste(filters$areas, collapse = ",")
+            }
         }
-        filters$areas <- NULL
+        filters$areas <- NULL ## that's taken care of
     }
-    for(key in names(filters)) {
-        class_code  <- NULL #TODO search 'meta' using filter[[key]]
-        value_codes <- NULL #TODO idem
-        params[[class_code]] <- paste(value_codes, collapse = ",")
+
+    if(length(filters) > 1) {
+        for(key in names(filters)) {
+            ## class_code  <- #TODO search 'meta' using filter[[key]]
+            ## value_codes <- #TODO idem
+            ## params[[class_code]] <- paste(value_codes, collapse = ",")
+        }
     }
 
     ## send query & parse XML results
