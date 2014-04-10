@@ -41,7 +41,8 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw=FALSE) {
     extract_data <- function(node) {
         value.nodes   <- xmlElementsByTagName(node[['DATA_INF']], 'VALUE')
         res           <- data.frame(t(sapply(value.nodes, xmlAttrs,
-                                             USE.NAMES = FALSE)))
+                                             USE.NAMES = FALSE)),
+                                    row.names = NULL)
         res$value     <- sapply(value.nodes, xmlValue,
                                 USE.NAMES = FALSE)
         return(res)
