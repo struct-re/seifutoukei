@@ -71,7 +71,9 @@ transcode <- function(x, table, y) {
     res[matching] <- (as.character(y)[indices])[matching]
     if (class(y) == "factor") {
         res         <- factor(res)
-        levels(res) <- levels(y)
+        if (all(levels(res) %in% levels(y))) {
+            levels(res) <- levels(y)
+        }
     }
 
     res
@@ -298,15 +300,15 @@ humanise.st_result <- function(result) {
     vars <- result$metadata$classes
     ## replace subclass codes with names (eg 001, 002 --> Men, Women)
     for (c in cols) {
-        codes    <-        vars[vars$class.id == c, "code"]
-        names    <- factor(vars[vars$class.id == c, "name"])
-        res[[c]] <- transcode(x=res[[c]], table=codes, y=names)
+        codes    <- vars[vars$class.id == c, "code"]
+        names    <- vars[vars$class.id == c, "name"]
+        res[, c] <- transcode(x=res[, c], table=codes, y=names)
     }
     ## replace class ids with names (eg cat01 --> Gender)
     cat.names <- unique(vars[, c('class.id', 'class.name')])
     colnames(res) <- transcode(colnames(result$data),
-                               cat.names[, 'id'],
-                               cat.names[, 'name'])
+                               cat.names[, 'class.id'],
+                               cat.names[, 'class.name'])
 
     res
 }
