@@ -64,15 +64,16 @@ lmerge <- function(into, from) {
     res
 }
 
-transcode <- function(x, table, y) {
-    indices  <- match(as.character(x), as.character(table), nomatch=NA)
+transcode <- function(x, table, copy.levels = FALSE) {
+    stopifnot(ncol(table) == 2)
+    indices  <- match(as.character(x), as.character(table[, 1]), nomatch = NA)
     matching <- !is.na(indices)
-    res      <- c(x)
-    res[matching] <- (as.character(y)[indices])[matching]
-    if (class(y) == "factor") {
+    res      <- c(as.character(x))
+    res[matching] <- (as.character(table[, 2])[indices])[matching]
+    if (copy.levels) {
         res         <- factor(res)
-        if (all(levels(res) %in% levels(y))) {
-            levels(res) <- levels(y)
+        if (all(levels(res) %in% levels(table[, 2]))) {
+            levels(res) <- levels(table[, 2])
         }
     }
 
@@ -262,7 +263,8 @@ parse_metadata <- function(parent.node) {
         classes = do.call(rbind, xmlSApply(c.node, handle_class_inf))
         )
 
-    res <- lapply(res, data.frame, row.names = NULL)
+    res <- lapply(res, data.frame, row.names = NULL,
+                  stringsAsFactors = FALSE)
 
     res
 }
@@ -300,15 +302,15 @@ humanise.st_result <- function(result) {
     vars <- result$metadata$classes
     ## replace subclass codes with names (eg 001, 002 --> Men, Women)
     for (c in cols) {
-        codes    <- vars[vars$class.id == c, "code"]
-        names    <- vars[vars$class.id == c, "name"]
-        res[, c] <- transcode(x=res[, c], table=codes, y=names)
+        codes <-        vars[vars$class.id == c, "code"]
+        names <- factor(vars[vars$class.id == c, "name"])
+        res[, c] <- transcode(res[, c], data.frame(codes, names))
     }
+
     ## replace class ids with names (eg cat01 --> Gender)
     cat.names <- unique(vars[, c('class.id', 'class.name')])
     colnames(res) <- transcode(colnames(result$data),
-                               cat.names[, 'class.id'],
-                               cat.names[, 'class.name'])
+                               cat.names)
 
     res
 }
