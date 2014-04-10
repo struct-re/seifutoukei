@@ -5,12 +5,14 @@
 #' @param keywords vector of keywords to filter by (resources that
 #' contain the keywords in metadata will be listed)
 #' @param survey.name name of a survey to filter by
+#' @param survey.date year, year and month (6 digits), or interval
+#' (year-month1-year-month2)
 #' 
 #' @importFrom XML xmlRoot append.xmlNode xmlChildren xmlValue xmlGetAttr xmlSApply removeChildren xmlToDataFrame xmlElementsByTagName
 #' @importFrom lubridate ymd
 #' @importMethodsFrom XML xmlToDataFrame
 #' @export
-stfind <- function(keywords=NA, survey.name=NA
+stfind <- function(keywords=NA, survey.name=NA, survey.date=NA
                    ##, area=NA, years=NA, survey.author=NA
                    ) {
     args <- as.list(match.call()[-1])
@@ -18,9 +20,13 @@ stfind <- function(keywords=NA, survey.name=NA
 
     ## Prepare query parameters
     params <- list()
+
+    ## keyword search
     if (any(!is.na(keywords))) {
         params$searchWord <- paste(keywords, collapse=" AND ")
     }
+
+    ## specify source survey
     if (!is.na(survey.name)) {
         srv <- find_survey_code(survey.name)
         if (nrow(srv) == 1) {
@@ -28,7 +34,27 @@ stfind <- function(keywords=NA, survey.name=NA
         }
     }
 
-    ## Run DB queries and parse results
+    ## specify (year-month) date or date range
+    ## preferred format: yyyy-mm or yyyy-mm-yyyy-mm
+    if (!is.na(survey.date)) {
+        survey.date <- gsub("–", "-",
+                            gsub("-(\\d{2})(-|$)", "\\1\\2",
+                                 survey.date))
+
+        if (length(survey.date == 1)) {
+            stopifnot(is_sane_year(survey.date) |
+                      is_ymdate(survey.date)    |
+                      is_ymrange(survey.date))
+        } else if (length(survey.date) == 2 &
+                   is_sane_year(survey.date)) {
+            survey.date <- paste(survey.date, collapse = '-')
+        } else {
+            stop("Could not make sense of survey.date parameter '",
+                 survey.date, "'.")
+        }
+    }
+
+        ## Run DB queries and parse results
     results <- list(NULL, NULL, NULL)
     counts  <- rep(0, 3)
     ## run the search for:

@@ -13,7 +13,8 @@
 ##' @param resource.id Numerical code of the resource containing the
 ##' desired data. Function \link{stfind} in this package provides one
 ##' way of looking up resources. Required.
-##' @param filters Optional \code{list} of criteria to filter the data
+##' @param filters (NOTE: most of this functionality is not yet
+##' implemented.)  Optional \code{list} of criteria to filter the data
 ##' by. Filters must be flat vectors of acceptable values for the
 ##' class variable named by the key. To build your filters correctly,
 ##' you will probably need to refer to the metadata for the resource

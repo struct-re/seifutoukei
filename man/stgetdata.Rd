@@ -19,16 +19,17 @@ stgetdata(resource.id, filters = list(), lang = NA, raw = FALSE)
   this package provides one way of looking up resources.
   Required.}
 
-  \item{filters}{Optional \code{list} of criteria to filter
-  the data by. Filters must be flat vectors of acceptable
-  values for the class variable named by the key. To build
-  your filters correctly, you will probably need to refer
-  to the metadata for the resource in question, which is
-  obtained using \code{\link{stgetmetadata}}. The special
-  name \code{areas} applies to all tables and accepts a
-  list of Japanese standard local authority codes (JIS
-  prefecture and municipality codes), see package
-  'jlocalitycodes'.}
+  \item{filters}{(NOTE: most of this functionality is not
+  yet implemented.)  Optional \code{list} of criteria to
+  filter the data by. Filters must be flat vectors of
+  acceptable values for the class variable named by the
+  key. To build your filters correctly, you will probably
+  need to refer to the metadata for the resource in
+  question, which is obtained using
+  \code{\link{stgetmetadata}}. The special name
+  \code{areas} applies to all tables and accepts a list of
+  Japanese standard local authority codes (JIS prefecture
+  and municipality codes), see package 'jlocalitycodes'.}
 
   \item{lang}{Language for variables and labels, as
   ISO-639-1 two-letter code. The database provides labels

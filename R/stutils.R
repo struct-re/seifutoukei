@@ -86,6 +86,23 @@ ympunct <- function(ymstrings) {
     res
 }
 
+ym.re <- "(19[5-9]|20[012])\\d(0[1-9]|1[012])"
+
+is_ymrange <- function(strings) {
+    re <- paste0('^', ym.re, '-', ym.re, '$')
+    all(regexpr(re, strings) > 0)
+}
+
+is_ymdate <- function(strings) {
+    re <- paste0('^', ym.re, '$')
+    all(regexpr(re, strings) > 0)
+}
+
+is_sane_year <- function(strings) {
+    re <- '^(19[5-9]|20[012])\\d$'
+    all(regexpr(re, strings) > 0)
+}
+
 ymrange <- function(strings) {
     rangesplit <- function(str) {
         cbind(substr(str, 1, 4),
@@ -112,16 +129,6 @@ ymrange <- function(strings) {
     res[ym_dates, ]      <- ymsplit(strings[ym_dates])
     res[years, "end.year"] <- strings[years]
     res
-}
-
-end_of_month <- function(date) {
-    if(any(class(date) %in% c("Date", "POSIXt", "POSIXct"))) {
-        res <- date
-        day(res[day(res) == 1]) <- 2
-        ceiling_date(res, "month") - days(1)
-    } else {
-        date
-    }
 }
 
 guess_survey_year_from_title <- function(titles) {
