@@ -40,15 +40,14 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
         survey.date <- gsub("–", "-",
                             gsub("-(\\d{2})(-|$)", "\\1\\2",
                                  survey.date))
-
-        if (length(survey.date == 1) &
-            (is_sane_year(survey.date) |
-             is_ymdate(survey.date)    |
-             is_ymrange(survey.date))) {
-            params$surveyYears <- survey.date
-        } else if (length(survey.date) == 2 &
-                   all(is_ymdate(survey.date))) {
+        if (length(survey.date) == 2 &
+            all(is_ymdate(survey.date))) {
             params$surveyYears <- paste(survey.date, collapse = '-')
+        } else if (length(survey.date == 1) &
+                   (is_sane_year(survey.date) |
+                    is_ymdate(survey.date)    |
+                    is_ymrange(survey.date))) {
+            params$surveyYears <- survey.date
         } else {
             stop("Could not make sense of survey.date parameter '",
                  survey.date, "'.")
