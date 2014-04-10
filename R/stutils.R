@@ -236,15 +236,7 @@ format_resource_id <- function(id) {
 #' @return an \code{st_metadata} list of \code{table.data} and \code{classes}, both
 #' \code{data.frame}s
 parse_metadata <- function(parent.node) {
-    message("parse_metadata called.\n")
-    
     handle_class_inf <- function(node) {
-        cat("handle_class_inf called for <",
-            xmlName(node), " name=",
-            xmlGetAttr(node, "name"), "> ... ", sep="")
-
-        cat("\n")
-        if (xmlGetAttr(node, "id") == "cat02") print(node)
         classes  <- t(xmlSApply(node, function(node) {
             a <- xmlAttrs(node)
             cbind(a['code'],
@@ -273,6 +265,7 @@ parse_metadata <- function(parent.node) {
     res
 }
 
+## experimental: shorter thanks to plyr::rbind.fill
 parse_metadata2 <- function(parent.node) {
     handle_class_inf <- function(node) {
         classes  <- t(xmlSApply(node, xmlAttrs))
