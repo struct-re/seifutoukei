@@ -131,6 +131,9 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
         ## sort by date, survey, and resource id
         res2 <- arrange(res2, survey.date, survey.name, id)
 
+        ## kill the is.shouchiiki column if full of zeroes
+        if (all(res2$is.shouchiiki == 0)) res2[, 'is.shouchiiki'] <- NULL
+
         res2
     } else {
 
