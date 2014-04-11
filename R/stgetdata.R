@@ -90,25 +90,60 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw=FALSE) {
         filters$areas <- NULL ## that's taken care of
     }
 
-    if(length(filters) > 1) {
-        for(key in names(filters)) {
-            ## class_code  <- #TODO search 'meta' using filter[[key]]
-            ## value_codes <- #TODO idem
-            ## params[[class_code]] <- paste(value_codes, collapse = ",")
-        }
-    }
+    ## if(length(filters) > 1) {
+    ##     for(key in names(filters)) {
+    ##         ## class_code  <- #TODO search 'meta' using filter[[key]]
+    ##         ## value_codes <- #TODO idem
+    ##         ## params[[class_code]] <- paste(value_codes, collapse = ",")
+    ##     }
+    ## }
 
-    ## send query & parse XML results
-    subroot <- xmlRoot(
-        nstac_api_call("getStatsData", params)
-        )[['STATISTICAL_DATA']]
-
-    ## format and deliver results
     res <- list(
         metadata  = meta,
-        footnotes = extract_footnotes(subroot),
-        data      = extract_data(subroot)
+        footnotes = NULL,
+        data      = NULL
         )
+
+    ## there is a 100,000-row hard limit; if there is data left to
+    ## request, adjust, repeat, and bind
+    received.until <- 0
+    total.results  <- NA
+
+    while (!isTRUE(received.until == total.results)) {
+        ## send query & parse XML results
+        xml     <- nstac_api_call("getStatsData", params)
+        subroot <- xmlRoot(xml)[['STATISTICAL_DATA']]
+
+        table_inf      <- subroot[['TABLE_INF']]
+        total.results  <- as.numeric(xmlValue(table_inf[['TOTAL_NUMBER']]))
+        received.until <- as.numeric(xmlValue(table_inf[['TO_NUMBER']]))
+        ## not needed:
+        ## received.from  <- as.numeric(xmlValue(table_inf[['FROM_NUMBER']]))
+
+        ## format and deliver results
+        res$footnotes <-
+            if (is.null(res$footnotes)) {
+                extract_footnotes(subroot)
+            } else {
+                rbind(res$footnotes, extract_footnotes(subroot))
+            }
+
+        res$data <-
+            if (is.null(res$data)) {
+                extract_data(subroot)
+            } else {
+                rbind(res$data, extract_data(subroot))
+            }
+
+        if (received.until < total.results) {
+            message("Partial result: ",
+                    prettyNum(format = "d", received.until, big.mark = ","),
+                    " out of ",
+                    prettyNum(format = "d", total.results, big.mark = ","),
+                    " received. Requesting next batch.")
+            params$startPosition <- sprintf("%d", received.until + 1)
+        }
+    }
 
     class(res) <- 'st_result'
     res
