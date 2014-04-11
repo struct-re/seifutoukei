@@ -2,14 +2,18 @@
 #' @title Locate tables and other resources in the Japanese official
 #' statistics open data access system
 #'
-#' @param keywords vector of keywords to filter by (resources that
-#' contain the keywords in metadata will be listed)
-#' @param survey.name name of a survey to filter by
-#' @param survey.date year, year and month (6 digits), or interval
-#' (year-month1-year-month2)
+#' @param keywords vector of keywords to search for (resources that
+#' contain the keywords in metadata will be listed). Place names
+#' should work as keywords.
+#' @param survey.name set this to limit the search to data from one
+#' survey. Use \code{stlistsurveys()} to get a list.
+#' @param survey.date year and optionally month \code{"yyyy-mm"}, or
+#' interval specified as starting and ending year and month
+#' \code{c(from="yyyy-mm", to="yyyy-mm")}.
 #' 
 #' @importFrom XML xmlRoot append.xmlNode xmlChildren xmlValue xmlGetAttr xmlSApply removeChildren xmlToDataFrame xmlElementsByTagName
 #' @importFrom lubridate ymd
+#' @importFrom plyr arrange
 #' @importMethodsFrom XML xmlToDataFrame
 #' @export
 stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
@@ -123,7 +127,9 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
             res2$survey.title.year <-
                 guess_survey_year_from_title(res2$publ.title)
         }
-        ## TODO implement area search
+
+        ## sort by date, survey, and resource id
+        res2 <- arrange(res2, survey.date, survey.name, id)
 
         res2
     } else {
