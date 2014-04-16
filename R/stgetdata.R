@@ -26,9 +26,8 @@
 ##' @param lang Language for variables and labels, as ISO-639-1
 ##' two-letter code. The database provides labels in Japanese
 ##' (\code{ja}) and English. Default: Japanese.
-##' @param raw Logical. Whether to return the data as they are in the
-##' database, with numerical codes for row and column labels. Default
-##' behaviour is to extract meaningful labels from the metadata.
+##' @param raw.params API params to include in the call as-is. Use
+##' with care.
 ##' @return An \code{st_result} object (\code{list(data=data.frame(),
 ##' footnotes=data.frame())}, or \code{NULL} if the request failed for
 ##' some reason. If the request succeeded but no matching data were
@@ -36,7 +35,7 @@
 ##'
 ##' @importFrom XML xmlElementsByTagName xmlAttrs
 ##' @export
-stgetdata <- function(resource.id, filters=list(), lang=NA, raw=FALSE) {
+stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
 
     extract_data <- function(node) {
         value.nodes   <- xmlElementsByTagName(node[['DATA_INF']], 'VALUE')
@@ -120,7 +119,13 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw=FALSE) {
             })
         }
     }
-    
+
+    if(length(raw.params) > 0) {
+        warning('Passing through these parameters with no checks: ',
+                paste(names(raw.params), raw.params, sep = '=', collapse = ', '))
+        params <- c(params, raw.params)
+    }
+
     res <- list(
         metadata  = meta,
         footnotes = NULL,

@@ -11,7 +11,7 @@ Calling this function will result in one or two HTTP requests to
 this computer before and is still in the
 cache. \code{\link{stclearcache}} clears the cache.}
 \usage{
-stgetdata(resource.id, filters = list(), lang = NA, raw = FALSE)
+stgetdata(resource.id, filters = list(), lang = NA, raw.params = list())
 }
 \arguments{
   \item{resource.id}{Numerical code of the resource
@@ -35,10 +35,8 @@ stgetdata(resource.id, filters = list(), lang = NA, raw = FALSE)
   ISO-639-1 two-letter code. The database provides labels
   in Japanese (\code{ja}) and English. Default: Japanese.}
 
-  \item{raw}{Logical. Whether to return the data as they
-  are in the database, with numerical codes for row and
-  column labels. Default behaviour is to extract meaningful
-  labels from the metadata.}
+  \item{raw.params}{API params to include in the call
+  as-is. Use with care.}
 }
 \value{
 An \code{st_result} object (\code{list(data=data.frame(),
