@@ -58,6 +58,28 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw=FALSE) {
             )
     }
 
+    transcode_filter <- function(key, values, meta) {
+        categories <- unique(meta$classes[, c('class.id', 'class.name')])
+        cat.code  <- categories$class.id[categories$class.name == key]
+        value.codes <- vapply(values, function(v) {
+            tmp <- meta$classes[meta$classes$name == v, 'code']
+            if (is.null(tmp) | length(tmp) != 1)
+                stop(paste0('No mention of',
+                            '\'', v, '\'',
+                            'in table metadata.'))
+            tmp
+        }, '')
+        if (!is.null(cat.code) & length(cat.code) == 1) {
+            c(paste0('cd',
+                     toupper(substr(cat.code, 1, 1)),
+                     substr(cat.code, 2, nchar(cat.code))),
+              paste0(value.codes, collapse = ",")
+              )
+        } else {
+            NULL
+        }
+    }
+
     ## get metadata to implement filtering by variable name and value
     meta <- stgetmetadata(resource.id)
 
@@ -90,14 +112,15 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw=FALSE) {
         filters$areas <- NULL ## that's taken care of
     }
 
-    ## if(length(filters) > 1) {
-    ##     for(key in names(filters)) {
-    ##         ## class_code  <- #TODO search 'meta' using filter[[key]]
-    ##         ## value_codes <- #TODO idem
-    ##         ## params[[class_code]] <- paste(value_codes, collapse = ",")
-    ##     }
-    ## }
-
+    if(length(filters) > 0) {
+        for(key in names(filters)) {
+            local({
+                filter <- transcode_filter(key, filters[[key]], meta)
+                if (!is.null(filter)) params[[filter[1]]] <- filter[[2]]
+            })
+        }
+    }
+    
     res <- list(
         metadata  = meta,
         footnotes = NULL,
