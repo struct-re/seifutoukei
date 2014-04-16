@@ -3,7 +3,8 @@
 \title{Locate tables and other resources in the Japanese official
 statistics open data access system}
 \usage{
-stfind(keywords = NULL, survey.name = NULL, survey.date = NULL)
+stfind(keywords = NULL, survey.name = NULL, survey.date = NULL,
+  raw.params = list())
 }
 \arguments{
   \item{keywords}{vector of keywords to search for
@@ -18,6 +19,9 @@ stfind(keywords = NULL, survey.name = NULL, survey.date = NULL)
   \code{"yyyy-mm"}, or interval specified as starting and
   ending year and month \code{c(from="yyyy-mm",
   to="yyyy-mm")}.}
+
+  \item{raw.params}{API parameters to pass through
+  unmodified.}
 }
 \description{
 Locate tables and other resources in the Japanese official

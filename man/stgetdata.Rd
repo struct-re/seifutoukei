@@ -35,8 +35,8 @@ stgetdata(resource.id, filters = list(), lang = NA, raw.params = list())
   ISO-639-1 two-letter code. The database provides labels
   in Japanese (\code{ja}) and English. Default: Japanese.}
 
-  \item{raw.params}{API params to include in the call
-  as-is. Use with care.}
+  \item{raw.params}{API parameters to pass through
+  unmodified. Use with care.}
 }
 \value{
 An \code{st_result} object (\code{list(data=data.frame(),

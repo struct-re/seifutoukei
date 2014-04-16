@@ -17,7 +17,7 @@
 #' @importFrom plyr arrange
 #' @importMethodsFrom XML xmlToDataFrame
 #' @export
-stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
+stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL,
                    ##, area=NULL, years=NULL, survey.author=NULL
                    raw.params=list()) {
     args <- as.list(match.call()[-1])
