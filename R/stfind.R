@@ -10,6 +10,7 @@
 #' @param survey.date year and optionally month \code{"yyyy-mm"}, or
 #' interval specified as starting and ending year and month
 #' \code{c(from="yyyy-mm", to="yyyy-mm")}.
+#' @param raw.params API parameters to pass through unmodified.
 #' 
 #' @importFrom XML xmlRoot append.xmlNode xmlChildren xmlValue xmlGetAttr xmlSApply removeChildren xmlToDataFrame xmlElementsByTagName
 #' @importFrom lubridate ymd
@@ -18,7 +19,7 @@
 #' @export
 stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
                    ##, area=NULL, years=NULL, survey.author=NULL
-                   ) {
+                   raw.params=list()) {
     args <- as.list(match.call()[-1])
     if (all(is.null(args))) stop("Please specify at least one query parameter.")
 
@@ -58,7 +59,13 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL
         }
     }
 
-        ## Run DB queries and parse results
+    if(length(raw.params) > 0) {
+        warning('Passing through these parameters with no checks: ',
+                paste(names(raw.params), raw.params, sep = '=', collapse = ', '))
+        params <- c(params, raw.params)
+    }
+
+    ## Run DB queries and parse results
     results <- list(NULL, NULL, NULL)
     counts  <- rep(0, 3)
     ## run the search for:

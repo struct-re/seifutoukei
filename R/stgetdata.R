@@ -26,7 +26,7 @@
 ##' @param lang Language for variables and labels, as ISO-639-1
 ##' two-letter code. The database provides labels in Japanese
 ##' (\code{ja}) and English. Default: Japanese.
-##' @param raw.params API params to include in the call as-is. Use
+##' @param raw.params API parameters to pass through unmodified. Use
 ##' with care.
 ##' @return An \code{st_result} object (\code{list(data=data.frame(),
 ##' footnotes=data.frame())}, or \code{NULL} if the request failed for
