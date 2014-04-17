@@ -141,6 +141,9 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL,
         ## kill the is.shouchiiki column if full of zeroes
         if (all(res2$is.shouchiiki == 0)) res2[, 'is.shouchiiki'] <- NULL
 
+        ## kill the publ.cycle column if full of dashes
+        if (all(res2$publ.cycle == '-')) res2[, 'publ.cycle'] <- NULL
+
         res2
     } else {
 
