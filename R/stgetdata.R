@@ -42,8 +42,8 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
         res       <- data.frame(t(sapply(nodes, xmlAttrs, USE.NAMES = FALSE)),
                                 row.names = NULL)
         res$value <- sapply(nodes, xmlValue, USE.NAMES = FALSE)
-        res$value <- as.numeric(gsub("-", "0", res$value, fixed = TRUE)
-        return(res)
+        res$value <- as.numeric(gsub("-", "0", res$value, fixed = TRUE))
+        res
     }
 
     extract_footnotes <- function(node) {
