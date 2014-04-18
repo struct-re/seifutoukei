@@ -38,12 +38,12 @@
 stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
 
     extract_data <- function(node) {
-        value.nodes   <- xmlElementsByTagName(node[['DATA_INF']], 'VALUE')
-        res           <- data.frame(t(sapply(value.nodes, xmlAttrs,
-                                             USE.NAMES = FALSE)),
-                                    row.names = NULL)
-        res$value     <- sapply(value.nodes, xmlValue,
-                                USE.NAMES = FALSE)
+        nodes     <- xmlElementsByTagName(node[['DATA_INF']], 'VALUE')
+        res       <- data.frame(
+            t(sapply(value.nodes, xmlAttrs, USE.NAMES = FALSE)),
+            row.names = NULL)
+        res$value <- sapply(value.nodes, xmlValue, USE.NAMES = FALSE)
+        res$value <- as.numeric(res$value)
         return(res)
     }
 
@@ -113,10 +113,9 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
 
     if(length(filters) > 0) {
         for(key in names(filters)) {
-            local({
-                filter <- transcode_filter(key, filters[[key]], meta)
-                if (!is.null(filter)) params[[filter[1]]] <- filter[[2]]
-            })
+            filter <- transcode_filter(key, filters[[key]], meta)
+            if (!is.null(filter)) params[[filter[1]]] <- filter[[2]]
+            rm(filter)
         }
     }
 
