@@ -39,11 +39,10 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
 
     extract_data <- function(node) {
         nodes     <- xmlElementsByTagName(node[['DATA_INF']], 'VALUE')
-        res       <- data.frame(
-            t(sapply(value.nodes, xmlAttrs, USE.NAMES = FALSE)),
-            row.names = NULL)
-        res$value <- sapply(value.nodes, xmlValue, USE.NAMES = FALSE)
-        res$value <- as.numeric(res$value)
+        res       <- data.frame(t(sapply(nodes, xmlAttrs, USE.NAMES = FALSE)),
+                                row.names = NULL)
+        res$value <- sapply(nodes, xmlValue, USE.NAMES = FALSE)
+        res$value <- as.numeric(gsub("-", "0", res$value, fixed = TRUE)
         return(res)
     }
 
