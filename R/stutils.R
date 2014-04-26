@@ -259,12 +259,11 @@ parse_metadata <- function(parent.node) {
     c.node <- parent.node[['CLASS_INF']]
 
     res <- list(
-        table   = xmlSApply(t.node, xmlValue),
-        classes = do.call(rbind, xmlSApply(c.node, handle_class_inf))
-        )
-
-    res <- lapply(res, data.frame, row.names = NULL,
-                  stringsAsFactors = FALSE)
+        table   = as.list(xmlSApply(t.node, xmlValue)),
+        classes = data.frame(
+            do.call(rbind, xmlSApply(c.node, handle_class_inf)),
+            row.names = NULL,
+            stringsAsFactors = FALSE))
 
     res
 }

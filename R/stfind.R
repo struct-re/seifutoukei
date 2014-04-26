@@ -1,4 +1,3 @@
-#' @name stfind
 #' @title Locate tables and other resources in the Japanese official
 #' statistics open data access system
 #'
@@ -158,9 +157,9 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL,
 
 ######################################################################
 
-#' @name stlistsurveys
 #' @title List all surveys from which data can be obtained through the
 #' official statistics open data system
+#' @export
 stlistsurveys <- function() {
     all_surveys()
 }

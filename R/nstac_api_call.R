@@ -108,13 +108,15 @@ nstac_api_call <- function(action, params, application.id=NA, force=FALSE) {
     cache.dir <- getOption("seifutoukei.http.cache.dir")
     if (is.null(cache.dir)) cache.dir <- "~/.seifutoukei.cache/"
 
-    ## check the cache, if cacheing is activated
-    cache <- isTRUE(getOption("seifutoukei.http.cache"))
+    ## check the cache, if cacheing is not deactivated
+    is.true.or.null <- function(x) isTRUE(x) | is.null(x)
+    cache <- is.true.or.null(getOption("seifutoukei.http.cache"))
     res   <- cache_get_xml(cache, qry.url, path = cache.dir)
 
     if(!is.null(res)) {
         ## cache hit
-        message("Cache hit: ", qry.url, "\n")
+        message("Cache hit: ", qry.url, "\n",
+                "To disable cacheing, set option(seifutoukei.http.cache = FALSE)")
         res
     } else {
         ## cache miss, res is NULL
