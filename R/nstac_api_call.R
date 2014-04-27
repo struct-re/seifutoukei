@@ -116,7 +116,7 @@ nstac_api_call <- function(action, params, application.id=NA, force=FALSE) {
     if(!is.null(res)) {
         ## cache hit
         message("Cache hit: ", qry.url, "\n",
-                "To disable cacheing, set option(seifutoukei.http.cache = FALSE)")
+                "To disable cacheing, set options(seifutoukei.http.cache = FALSE)")
         res
     } else {
         ## cache miss, res is NULL
