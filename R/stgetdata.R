@@ -60,11 +60,13 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
         categories <- unique(meta$classes[, c('class.id', 'class.name')])
         cat.code  <- categories$class.id[categories$class.name == key]
         value.codes <- vapply(values, function(v) {
-            tmp <- meta$classes[meta$classes$name == v, 'code']
+            tmp <- meta$classes[meta$class$class.name == key &
+                                meta$classes$name == v,
+                                'code']
             if (is.null(tmp) | length(tmp) != 1)
-                stop(paste0('No mention of',
+                stop(paste0('No mention of ',
                             '\'', v, '\'',
-                            'in table metadata.'))
+                            ' in table metadata.'))
             tmp
         }, '')
         if (!is.null(cat.code) & length(cat.code) == 1) {
