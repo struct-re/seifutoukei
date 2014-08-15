@@ -37,15 +37,27 @@
 ##' @export
 stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
 
+    ## utility functions
+    ## =================
+
+    ## extract statistics data from an XML tree of which 'node' is the root
     extract_data <- function(node) {
         nodes     <- xmlElementsByTagName(node[['DATA_INF']], 'VALUE')
-        res       <- data.frame(t(sapply(nodes, xmlAttrs, USE.NAMES = FALSE)),
-                                row.names = NULL)
-        res$value <- sapply(nodes, xmlValue, USE.NAMES = FALSE)
+        names(nodes) <- NULL ## reduce messiness
+        ## make blank unit attrs explicit for dimensionless quantities
+        nodes     <- lapply(nodes, function(n) {
+            if (is.null(xmlGetAttr(n, 'unit'))) {
+                xmlAttrs(n, append = TRUE) <- c('unit' = '')
+            }
+            n
+        })
+        res       <- data.frame(t(sapply(nodes, xmlAttrs)))
+        res$value <- sapply(nodes, xmlValue)
         res$value <- as.numeric(gsub("-", "0", res$value, fixed = TRUE))
         res
     }
 
+    ## extract note data from an XML tree of which 'node' is the root
     extract_footnotes <- function(node) {
         note.nodes <- xmlElementsByTagName(node[['DATA_INF']], 'NOTE')
         return(
@@ -56,6 +68,8 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
             )
     }
 
+    ## translate a filter defined using text labels into the table's
+    ## codes, using the information in 'meta'
     transcode_filter <- function(key, values, meta) {
         categories <- unique(meta$classes[, c('class.id', 'class.name')])
         cat.code  <- categories$class.id[categories$class.name == key]
@@ -80,11 +94,14 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
         }
     }
 
+    ## main procedure starts here
+    ## ==========================
+    
     ## get metadata to implement filtering by variable name and value
     meta <- stgetmetadata(resource.id)
 
     ## Prepare query parameters
-    ## ========================
+    ## ------------------------
     params <- list(
         statsDataId = format_resource_id(resource.id),
         metaGetFlg  = "N" # since we obtained the metadata above
@@ -126,14 +143,18 @@ stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
         params <- c(params, raw.params)
     }
 
+    ## construct the result object by sending the query
+    ## ------------------------------------------------
+
     res <- list(
         metadata  = meta,
         footnotes = NULL,
         data      = NULL
         )
 
-    ## there is a 100,000-row hard limit; if there is data left to
-    ## request, adjust, repeat, and bind
+    ## there is a 100,000-row hard limit; if the total number of rows
+    ## in the query result is higher, additional queries will be
+    ## needed to get the rest, hence the loop.
     received.until <- 0
     total.results  <- NA
 

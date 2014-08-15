@@ -15,8 +15,6 @@ humanise <- function(x) UseMethod("humanise", x)
 #' @export
 humanise.st_result <- function(result) {
     res  <- result$data
-    ## keep a copy of the JIS area codes
-    res[, "area.code"] <- res$area
 
     cols <- colnames(res)[!colnames(res) %in% c("unit", "value",
                                                 "area.code")]
@@ -29,9 +27,12 @@ humanise.st_result <- function(result) {
     }
 
     ## replace class ids with names (eg cat01 --> Gender)
-    cat.names <- unique(vars[, c('class.id', 'class.name')])
+    cat.names <- 
+        unique(vars[, c('class.id', 'class.name')])
     colnames(res) <- transcode(colnames(result$data),
                                cat.names)
+    ## keep a copy of the JIS area codes
+    res[, "id"] <- result$data$area
 
     res
 }
