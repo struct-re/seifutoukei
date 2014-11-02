@@ -33,7 +33,7 @@
 ##' some reason. If the request succeeded but no matching data were
 ##' found, the \code{data} element will have zero rows.
 ##'
-##' @importFrom XML xmlElementsByTagName xmlAttrs
+##' @importFrom XML xmlElementsByTagName xmlGetAttr xmlAttrs
 ##' @export
 stgetdata <- function(resource.id, filters=list(), lang=NA, raw.params=list()) {
 
