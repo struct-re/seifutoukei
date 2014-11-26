@@ -19,13 +19,13 @@ government, its author has no connection with the Japanese government,
 which also provides no guarantees regarding the output produced by the
 software.
 
-### Version history 更新情報
+### 更新情報 / Version history
 
 #### v0.2 (2014-11-26)
 
+- 政府統計の総合窓口(e-Stat)の機能としての本格運用開始に伴い，サーバーURIを statdb.nstac.go.jp から api.e-stat.go.jp に変更
 - Switched from the experimental server at statdb.nstac.go.jp to the new
 e-stat API server
-- 政府統計の総合窓口(e-Stat)の機能としての本格運用開始に伴い，サーバーURIを statdb.nstac.go.jp から api.e-stat.go.jp に変更
 
 #### v0.1 (2014-04-03)
 
