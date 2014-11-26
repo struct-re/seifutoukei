@@ -6,13 +6,13 @@ seifutoukei
 Access [Japanese official statistics open
 data](http://www.e-stat.go.jp/api/) from R.
 
-クレジット表示
---------------
+## クレジット表示
+
 このソフトウェアは、政府統計総合窓口(e-Stat)のAPI機能を使用していますが、ソフトウェアの内容は国によって保証されたものではありません。
 
 
-Disclaimer
-----------
+## Disclaimer
+
 This is experimental software intended for use in academic
 research. It is being published under the terms of the GNU Public
 License (version 2).
@@ -22,8 +22,7 @@ government, its authors have no connection with the Japanese
 government, which also provides no guarantees regarding the output
 produced by the software.
 
-Version history 更新情報
-------------------------
+## Version history 更新情報
 
 ### v0.2 (2014-11-26)
 
@@ -35,8 +34,7 @@ e-stat API server
 
 Initial release / 初版
 
-インストールと初期設定 Intallation and setup
---------------------------------------------
+## インストールと初期設定 Intallation and setup
 
 ````R
 library(devtools)
@@ -57,8 +55,7 @@ key (called an 'application ID') by [registering
 here](http://www.e-stat.go.jp/api/regist-login/). You can then save it
 as an option.
 
-利用方法 Usage 
---------------
+## 利用方法 Usage 
 
 ````R
 library(seifutoukei)
@@ -103,8 +100,7 @@ help(stgetmetadata)
 help(stgetdata)
 ````
 
-活用例 Usage example
---------------------
+## 活用例 Usage example
 
 ````R
 metadata <- stgetmetadata('0003038586')
