@@ -82,6 +82,9 @@ response <- stgetdata(resource.id, filters = list(
     '...' = c('...', '...'),
     '...' = '...'
 ))
+response$metadata
+response$data
+response$footnotes
 
 # コードを日本語の変数名・分類項目に変換する
 # Human-readable variable names and factor labels
