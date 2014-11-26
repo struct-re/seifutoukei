@@ -86,7 +86,7 @@ response$metadata
 response$data
 response$footnotes
 
-# コードを日本語の変数名・分類項目に変換する
+# コードを日本語の変数名・分類項目名に変換する
 # Human-readable variable names and factor labels
 humanise(response)
 
