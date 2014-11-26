@@ -65,10 +65,10 @@ stlistsurveys()
 # Search for resources (resources are typically summary tables)
 stfind(keywords)
 stfind(survey.name = "...")
-stfind(keywords, survey.name = "...")
 stfind(survey.date = "yyyy")
 stfind(survey.date = "yyyy-mm")
 stfind(survey.date = c(from="yyyy-mm", to="yyyy-mm"))
+stfind(keywords, survey.name = "...", survey.date = c(from="yyyy-mm", to="yyyy-mm"))
 
 # 統計表のメタ情報を閲覧する
 # View resource metadata (names of variables and classes)
