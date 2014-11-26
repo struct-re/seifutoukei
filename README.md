@@ -1,7 +1,7 @@
 seifutoukei
 ===========
 
-Ｒから[「政府統計の総合窓口」](http://www.e-stat.go.jp/api)にアクセスでいるパッケージです。政府統計を検索し、データを data.frame に自動変換して取得します。
+Ｒから[「政府統計の総合窓口」](http://www.e-stat.go.jp/api)にアクセスできるパッケージです。政府統計を検索し、データを data.frame に自動変換して取得します。
 
 Access [Japanese official statistics open
 data](http://www.e-stat.go.jp/api/) from R.
