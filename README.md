@@ -72,7 +72,9 @@ stfind(keywords, survey.name = "...", survey.date = c(from="yyyy-mm", to="yyyy-m
 
 # 統計表のメタ情報を閲覧する
 # View resource metadata (names of variables and classes)
-stgetmetadata(resource.id) ## resource.id は統計表番号
+meta <- stgetmetadata(resource.id) ## resource.id は統計表番号
+meta$table
+meta$classes
 
 # 統計表からデータを取得する
 # Download data from resource
