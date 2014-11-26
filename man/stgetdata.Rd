@@ -5,9 +5,9 @@ the Japanese official statistics open-data access system.
 
 This function offers convenient filtering by area and
 variable. For more esoteric queries that rely on the exact layout
-of the table, \code{\link{nstac_api_call}} can be used directly.
+of the table, \code{\link{estat_api_call}} can be used directly.
 Calling this function will result in one or two HTTP requests to
-\url{statdb.nstac.go.jp}, unless the same query has been made on
+\url{api.e-stat.go.jp}, unless the same query has been made on
 this computer before and is still in the
 cache. \code{\link{stclearcache}} clears the cache.}
 \usage{
@@ -51,9 +51,9 @@ the Japanese official statistics open-data access system.
 
 This function offers convenient filtering by area and
 variable. For more esoteric queries that rely on the exact
-layout of the table, \code{\link{nstac_api_call}} can be
+layout of the table, \code{\link{estat_api_call}} can be
 used directly. Calling this function will result in one or
-two HTTP requests to \url{statdb.nstac.go.jp}, unless the
+two HTTP requests to \url{api.e-stat.go.jp}, unless the
 same query has been made on this computer before and is
 still in the cache. \code{\link{stclearcache}} clears the
 cache.

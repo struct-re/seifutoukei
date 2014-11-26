@@ -69,12 +69,12 @@ stfind <- function(keywords=NULL, survey.name=NULL, survey.date=NULL,
     counts  <- rep(0, 3)
     ## run the search for:
     ## (1) standard tables
-    results[[1]] <- nstac_api_call("getStatsList", params)
+    results[[1]] <- estat_api_call("getStatsList", params)
     ## (2) "小地域・地域メッシュ" tables
-    results[[2]] <- nstac_api_call("getStatsList",
+    results[[2]] <- estat_api_call("getStatsList",
                             lmerge(params, list(searchKind="2")))
     ## (3) "社会・人口統計体系" tables
-    results[[3]] <- nstac_api_call("getStatsList",
+    results[[3]] <- estat_api_call("getStatsList",
                             lmerge(params, list(searchKind="3")))
 
     ## combine the results

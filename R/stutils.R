@@ -6,7 +6,7 @@
 ## shared data store and utility functions
 
 ## Package-global shared data (in-memory cache)
-## do not confuse with on-disk cache of server responses, see nstac_api_call.R
+## do not confuse with on-disk cache of server responses, see estat_api_call.R
 ################################################################################
 
 .st_cache <- new.env()
@@ -171,7 +171,7 @@ all_surveys <- function() {
     cached_variable('surveys', function() {
         xs <- xmlChildren(
             xmlRoot(
-                nstac_api_call("getStatsList", list(statsNameList = "Y"))
+                estat_api_call("getStatsList", list(statsNameList = "Y"))
                 )[["DATALIST_INF"]]
             )
         xs <- xs[names(xs) == "LIST_INF"]

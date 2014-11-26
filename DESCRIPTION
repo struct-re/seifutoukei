@@ -7,7 +7,7 @@ Description: Unofficial R interface to the Japanese official
     http://statdb.nstac.go.jp/. The author of this package is not
     affiliated with or authorised by the institutions running the data
     service.
-Version: 0.1
+Version: 0.2
 Author: Mikael Bourqui <bourqui@struct.re>
 Maintainer: Mikael Bourqui <bourqui@struct.re>
 Depends:

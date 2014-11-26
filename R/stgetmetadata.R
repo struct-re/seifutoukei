@@ -14,7 +14,7 @@ stgetmetadata <- function(resource.id, lang=NA) {
     params <- add_lang_option(params, lang)
     res <- parse_metadata(
         xmlRoot(
-            nstac_api_call("getMetaInfo", params)
+            estat_api_call("getMetaInfo", params)
             )[['METADATA_INF']]
         )
     res$table$RESOURCE_ID <- resource.id
